@@ -1086,19 +1086,29 @@
             summaryDiv.innerHTML = summaryHTML;
         }
 
-        // Calculate button (placeholder for now)
+        // Calculate button - redirect to results page
         document.addEventListener('DOMContentLoaded', function() {
             const calculateBtn = document.getElementById('calculateBtn');
             if (calculateBtn) {
                 calculateBtn.addEventListener('click', function() {
-                    alert('Funzione di calcolo preventivo in arrivo!\n\nQuesto pulsante sarà attivato nella prossima fase.');
+                    // Save answers to localStorage
+                    localStorage.setItem('secureline_answers', JSON.stringify(answers));
+                    localStorage.setItem('secureline_type', 'casa');
+                    
+                    // Redirect to results page
+                    window.location.href = 'SecureLine_Risultati.html';
                 });
             }
             
             const calculateBtnBusiness = document.getElementById('calculateBtnBusiness');
             if (calculateBtnBusiness) {
                 calculateBtnBusiness.addEventListener('click', function() {
-                    alert('Funzione di calcolo preventivo in arrivo!\n\nQuesto pulsante sarà attivato nella prossima fase.');
+                    // Save answers to localStorage
+                    localStorage.setItem('secureline_answers', JSON.stringify(answers));
+                    localStorage.setItem('secureline_type', 'business');
+                    
+                    // Redirect to results page
+                    window.location.href = 'SecureLine_Risultati.html';
                 });
             }
         });
