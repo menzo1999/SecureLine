@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureHome - Sistema d'Allarme Professionale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .hero.hidden {
+            display: none;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .calculator-section {
+            background: #f8fafc;
+            padding: 3rem 0;
+            display: none;
+        }
+
+        .calculator-section.visible {
+            display: block;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .calculator-header h2 {
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .question {
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0);
+            }
+        }
+
+        .question-title {
+            color: #1e3a8a;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .question-subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .progress-indicator {
+            margin-bottom: 2rem;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .form-group input,
+        .form-group select,
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option-grid-large {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .option-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+        }
+
+        .option-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .option-card-large {
+            border: 3px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .option-card-large:hover {
+            border-color: #3b82f6;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
+        }
+
+        .option-card-large.selected {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .option-card-large .option-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .device-price {
+            font-weight: bold;
+            color: #3b82f6;
+            font-size: 1.1rem;
+        }
+
+        .checkbox-group {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkbox-item:hover {
+            border-color: #3b82f6;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .checkbox-item.checked {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .device-info {
+            flex-grow: 1;
+        }
+
+        .device-info h4 {
+            color: #1e3a8a;
+            margin-bottom: 0.25rem;
+        }
+
+        .device-info p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .device-price {
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .result-section {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .result-header h3 {
+            color: #1e3a8a;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-display {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .price-large {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .price-period {
+            color: #64748b;
+            font-size: 1.2rem;
+        }
+
+        .installation-price {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .summary-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .summary-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary-item-name {
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .summary-item-qty {
+            color: #64748b;
+        }
+
+        .features-section {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 12px;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .option-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .option-grid-large {
+                grid-template-columns: 1fr;
+            }
+
+            .question-title {
+                font-size: 1.2rem;
+            }
+
+            .calculator-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo" style="cursor: pointer;" onclick="location.reload()">SecureHome</div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Proteggi la tua Casa e il tuo Business</h1>
+            <p>Sistema d'allarme professionale con monitoraggio 24/7</p>
+            <button id="startQuoteBtn" class="btn btn-primary" style="display: inline-block; text-decoration: none; border: none; cursor: pointer;">
+                Calcola il tuo Preventivo
+            </button>
+        </div>
+    </section>
+
+    <section class="calculator-section">
+        <div class="container">
+            <div class="calculator-card">
+                <div class="calculator-header">
+                    <h2>Calcola il tuo Preventivo</h2>
+                    <p>Rispondi a poche domande per ricevere un preventivo personalizzato</p>
+                </div>
+
+                <div class="progress-indicator">
+                    <div class="progress-text">Domanda <span id="currentQuestion">1</span> di <span id="totalQuestions">8</span></div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="progressBar"></div>
+                    </div>
+                </div>
+
+                <form id="quoteForm">
+                    <!-- Domanda 1: Casa o Business -->
+                    <div class="question active" data-question="1">
+                        <h3 class="question-title">L'Allarme è per la Casa o per il Business?</h3>
+                        <div class="option-grid-large">
+                            <div class="option-card-large" data-name="clientType" data-value="casa">
+                                <div class="option-title">Casa</div>
+                                <p style="color: #64748b; margin-top: 0.5rem;">Protezione per la mia abitazione</p>
+                            </div>
+                            <div class="option-card-large" data-name="clientType" data-value="business">
+                                <div class="option-title">Business</div>
+                                <p style="color: #64748b; margin-top: 0.5rem;">Protezione per la mia attività</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Domanda 2: Tipo di casa -->
+                    <div class="question" data-question="2" data-for="casa">
+                        <h3 class="question-title">In che tipo di casa risiedi?</h3>
+                        <div class="option-grid-large">
+                            <div class="option-card-large" data-name="houseType" data-value="appartamento">
+                                <div class="option-title">Appartamento</div>
+                            </div>
+                            <div class="option-card-large" data-name="houseType" data-value="casa-indipendente">
+                                <div class="option-title">Casa indipendente</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Domanda 3: Posizione casa -->
+                    <div class="question" data-question="3" data-for="casa">
+                        <h3 class="question-title">Dove si trova la casa?</h3>
+                        <div class="option-grid-large">
+                            <div class="option-card-large" data-name="location" data-value="fuori">
+                                <div class="option-title">Fuori il nucleo urbano</div>
+                                <p style="color: #64748b; margin-top: 0.5rem;">In zona periferica o isolata</p>
+                            </div>
+                            <div class="option-card-large" data-name="location" data-value="dentro">
+                                <div class="option-title">Nel nucleo urbano</div>
+                                <p style="color: #64748b; margin-top: 0.5rem;">In centro città o zona abitata</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Domanda 4: Tipo accesso -->
+                    <div class="question" data-question="4" data-for="casa">
+                        <h3 class="question-title">Com'è l'accesso principale della casa?</h3>
+                        <div class="option-grid-large">
+                            <div class="option-card-large" data-name="accessType" data-value="indipendente">
+                                <div class="option-title">Ingresso indipendente</div>
+                            </div>
+                            <div class="option-card-large" data-name="accessType" data-value="condiviso">
+                                <div class="option-title">Ingresso condiviso</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Domanda 5: Grate di protezione -->
+                    <div class="question" data-question="5" data-for="casa">
+                        <h3 class="question-title">Le finestre della tua casa hanno grate di protezione?</h3>
+                        <div class="option-grid-large">
+                            <div class="option-card-large" data-name="windowBars" data-value="si">
+                                <div class="option-title">Sì</div>
+                                <p style="color: #64748b; margin-top: 0.5rem;">Le finestre hanno grate</p>
+                            </div>
+                            <div class="option-card-large" data-name="windowBars" data-value="no">
+                                <div class="option-title">No</div>
+                                <p style="color: #64748b; margin-top: 0.5rem;">Le finestre non hanno grate</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Domanda 6: CAP -->
+                    <div class="question" data-question="6" data-for="casa">
+                        <h3 class="question-title">Qual è il C.A.P. della tua casa?</h3>
+                        <p class="question-subtitle">Inserisci il codice di avviamento postale</p>
+                        <div style="max-width: 400px; margin: 2rem auto;">
+                            <input 
+                                type="text" 
+                                id="zipCode" 
+                                name="zipCode" 
+                                placeholder="Es. 00100" 
+                                maxlength="5"
+                                pattern="[0-9]{5}"
+                                style="width: 100%; padding: 1rem; font-size: 1.2rem; text-align: center; border: 2px solid #e2e8f0; border-radius: 8px; transition: border-color 0.3s;"
+                            />
+                            <button 
+                                type="button" 
+                                id="zipCodeBtn" 
+                                class="btn btn-primary" 
+                                style="width: 100%; margin-top: 1rem; padding: 1rem;"
+                            >
+                                Avanti →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Domanda 7: Furti passati -->
+                    <div class="question" data-question="7" data-for="casa">
+                        <h3 class="question-title">Hanno mai rubato in passato a casa tua o dai vicini?</h3>
+                        <div class="option-grid-large">
+                            <div class="option-card-large" data-name="pastTheft" data-value="si">
+                                <div class="option-title">Sì</div>
+                                <p style="color: #64748b; margin-top: 0.5rem;">Ci sono stati furti in zona</p>
+                            </div>
+                            <div class="option-card-large" data-name="pastTheft" data-value="no">
+                                <div class="option-title">No</div>
+                                <p style="color: #64748b; margin-top: 0.5rem;">Zona tranquilla, nessun furto</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risultato -->
+                    <div class="question" data-question="8" data-for="casa">
+                        <div class="result-section">
+                            <div class="result-header">
+                                <h3>Grazie per le tue risposte!</h3>
+                                <p>Il tuo preventivo personalizzato è pronto</p>
+                            </div>
+
+                            <div style="text-align: center; margin: 3rem 0;">
+                                <div style="font-size: 1.2rem; color: #64748b; margin-bottom: 1rem;">
+                                    Il nostro sistema ha analizzato le tue esigenze
+                                </div>
+                                <p style="color: #64748b; margin-bottom: 2rem;">
+                                    Premi il pulsante qui sotto per visualizzare il tuo preventivo personalizzato
+                                </p>
+                            </div>
+
+                            <div style="text-align: center;">
+                                <button 
+                                    type="button" 
+                                    id="calculateBtn"
+                                    class="btn btn-primary" 
+                                    style="font-size: 1.2rem; padding: 1.25rem 3rem; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);"
+                                >
+                                    Calcola il tuo Preventivo
+                                </button>
+                            </div>
+
+                            <div style="margin-top: 3rem; padding: 1.5rem; background: white; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                                <h4 style="color: #1e3a8a; margin-bottom: 1rem;">Riepilogo delle tue risposte:</h4>
+                                <div id="answersSummary" style="color: #64748b; line-height: 1.8;">
+                                    <!-- Summary will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder per Business (da implementare) -->
+                    <div class="question" data-question="2" data-for="business">
+                        <div style="text-align: center; padding: 4rem 2rem;">
+                            <h3 class="question-title">Sezione Business in arrivo</h3>
+                            <p style="color: #64748b; margin-top: 1rem;">
+                                Il preventivo per le attività commerciali sarà disponibile a breve.
+                            </p>
+                            <button type="button" class="btn btn-secondary" onclick="location.reload()" style="margin-top: 2rem;">
+                                Torna all'inizio
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" class="btn btn-secondary" id="prevBtn">
+                            ← Indietro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 8; // 7 questions + 1 result for casa flow
+        let answers = {};
+
+        // Handle start quote button
+        document.getElementById('startQuoteBtn').addEventListener('click', function() {
+            // Hide hero section
+            document.querySelector('.hero').classList.add('hidden');
+            
+            // Show calculator section
+            document.querySelector('.calculator-section').classList.add('visible');
+            
+            // Scroll to calculator
+            setTimeout(() => {
+                document.querySelector('.calculator-section').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        });
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentQuestion - 1) / (totalQuestions - 1)) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQuestion').textContent = currentQuestion;
+            document.getElementById('totalQuestions').textContent = totalQuestions - 1;
+        }
+
+        // Show specific question
+        function showQuestion(questionNum) {
+            // Hide all questions
+            document.querySelectorAll('.question').forEach(q => q.classList.remove('active'));
+            
+            // Find the target question
+            let targetQuestion = null;
+            
+            // Question 1 has no data-for attribute
+            if (questionNum === 1) {
+                targetQuestion = document.querySelector(`.question[data-question="1"]`);
+            } 
+            // For other questions, check if we need to filter by clientType
+            else {
+                const clientType = answers.clientType ? answers.clientType.value : null;
+                if (clientType) {
+                    targetQuestion = document.querySelector(`.question[data-question="${questionNum}"][data-for="${clientType}"]`);
+                }
+            }
+            
+            // Show target question
+            if (targetQuestion) {
+                targetQuestion.classList.add('active');
+            }
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top of calculator card
+            setTimeout(() => {
+                document.querySelector('.calculator-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+            
+            // Show/hide back button
+            document.getElementById('prevBtn').style.display = questionNum === 1 ? 'none' : 'block';
+        }
+
+        // Handle option card selection
+        document.querySelectorAll('.option-card, .option-card-large').forEach(card => {
+            card.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const value = this.dataset.value;
+                const price = this.dataset.price || 0;
+                
+                // Remove selection from siblings
+                const parent = this.parentElement;
+                parent.querySelectorAll('.option-card, .option-card-large').forEach(c => {
+                    c.classList.remove('selected');
+                });
+                
+                // Select this card
+                this.classList.add('selected');
+                
+                // Save answer
+                answers[name] = {
+                    value: value,
+                    price: parseFloat(price)
+                };
+                
+                // Auto advance to next question after short delay
+                setTimeout(() => {
+                    if (currentQuestion < totalQuestions) {
+                        currentQuestion++;
+                        showQuestion(currentQuestion);
+                        
+                        // Show summary on last question
+                        if (currentQuestion === totalQuestions) {
+                            showSummary();
+                        }
+                    }
+                }, 400);
+            });
+        });
+
+        // Handle ZIP code input
+        const zipCodeInput = document.getElementById('zipCode');
+        const zipCodeBtn = document.getElementById('zipCodeBtn');
+        
+        if (zipCodeInput && zipCodeBtn) {
+            // Allow only numbers
+            zipCodeInput.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+            
+            // Handle Enter key
+            zipCodeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    zipCodeBtn.click();
+                }
+            });
+            
+            // Handle button click
+            zipCodeBtn.addEventListener('click', function() {
+                const zipValue = zipCodeInput.value.trim();
+                
+                if (zipValue.length !== 5) {
+                    alert('Per favore, inserisci un C.A.P. valido di 5 cifre');
+                    zipCodeInput.focus();
+                    return;
+                }
+                
+                // Save ZIP code
+                answers.zipCode = {
+                    value: zipValue
+                };
+                
+                // Advance to next question
+                if (currentQuestion < totalQuestions) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    
+                    // Show summary on last question
+                    if (currentQuestion === totalQuestions) {
+                        showSummary();
+                    }
+                }
+            });
+        }
+
+        // Back button
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        // Show summary of answers
+        function showSummary() {
+            const summaryDiv = document.getElementById('answersSummary');
+            if (!summaryDiv) return;
+            
+            let summaryHTML = '<ul style="list-style: none; padding: 0;">';
+            
+            // Create readable labels
+            const labels = {
+                clientType: 'Tipo di allarme',
+                houseType: 'Tipo di abitazione',
+                location: 'Posizione',
+                accessType: 'Tipo di accesso',
+                windowBars: 'Grate alle finestre',
+                zipCode: 'C.A.P.',
+                pastTheft: 'Furti precedenti'
+            };
+            
+            const values = {
+                casa: 'Casa',
+                business: 'Business',
+                appartamento: 'Appartamento',
+                'casa-indipendente': 'Casa indipendente',
+                fuori: 'Fuori il nucleo urbano',
+                dentro: 'Nel nucleo urbano',
+                indipendente: 'Ingresso indipendente',
+                condiviso: 'Ingresso condiviso',
+                si: 'Sì',
+                no: 'No'
+            };
+            
+            for (const [key, answer] of Object.entries(answers)) {
+                if (labels[key]) {
+                    const displayValue = values[answer.value] || answer.value;
+                    summaryHTML += `
+                        <li style="padding: 0.5rem 0; display: flex; justify-content: space-between; border-bottom: 1px solid #e2e8f0;">
+                            <span><strong>${labels[key]}:</strong></span>
+                            <span>${displayValue}</span>
+                        </li>
+                    `;
+                }
+            }
+            
+            summaryHTML += '</ul>';
+            summaryDiv.innerHTML = summaryHTML;
+        }
+
+        // Calculate button (placeholder for now)
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            if (calculateBtn) {
+                calculateBtn.addEventListener('click', function() {
+                    alert('Funzione di calcolo preventivo in arrivo! 🚀\n\nQuesto pulsante sarà attivato nella prossima fase.');
+                });
+            }
+        });
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
