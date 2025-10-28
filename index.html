@@ -929,7 +929,7 @@
 
                 <div class="actions">
                     <button class="btn btn-primary" onclick="window.print()">Stampa Preventivo</button>
-                    <a href="SecureLine.html" class="btn btn-secondary">Nuovo Preventivo</a>
+                    <a href="./" class="btn btn-secondary">Nuovo Preventivo</a>
                 </div>
             </div>
 
@@ -994,8 +994,10 @@
 
         // Handle start quote button - open in new tab with questionnaire mode
         document.getElementById('startQuoteBtn').addEventListener('click', function() {
+            // Get current URL without parameters
+            const baseUrl = window.location.origin + window.location.pathname;
             // Open same file in new tab but in questionnaire mode
-            window.open('SecureLine.html?mode=questionnaire', '_blank');
+            window.open(baseUrl + '?mode=questionnaire', '_blank');
         });
 
         // Update progress bar
@@ -1274,8 +1276,10 @@
                     localStorage.setItem('secureline_answers', JSON.stringify(answers));
                     localStorage.setItem('secureline_type', 'casa');
                     
+                    // Get current URL without parameters
+                    const baseUrl = window.location.origin + window.location.pathname;
                     // Redirect to results mode
-                    window.location.href = 'SecureLine.html?mode=results';
+                    window.location.href = baseUrl + '?mode=results';
                 });
             }
             
@@ -1286,8 +1290,10 @@
                     localStorage.setItem('secureline_answers', JSON.stringify(answers));
                     localStorage.setItem('secureline_type', 'business');
                     
+                    // Get current URL without parameters
+                    const baseUrl = window.location.origin + window.location.pathname;
                     // Redirect to results mode
-                    window.location.href = 'SecureLine.html?mode=results';
+                    window.location.href = baseUrl + '?mode=results';
                 });
             }
         });
