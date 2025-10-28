@@ -805,18 +805,10 @@
         let totalQuestions = 8; // Will be updated based on client type
         let answers = {};
 
-        // Handle start quote button
+        // Handle start quote button - open in new tab
         document.getElementById('startQuoteBtn').addEventListener('click', function() {
-            // Hide hero section
-            document.querySelector('.hero').classList.add('hidden');
-            
-            // Show calculator section
-            document.querySelector('.calculator-section').classList.add('visible');
-            
-            // Scroll to calculator
-            setTimeout(() => {
-                document.querySelector('.calculator-section').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            // Open questionnaire in new tab
+            window.open('SecureLine_Questionario.html', '_blank');
         });
 
         // Update progress bar
