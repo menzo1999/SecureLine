@@ -132,103 +132,6 @@
             display: block;
         }
 
-        .results-section {
-            background: #ffffff;
-            padding: 3rem 0;
-        }
-
-        .results-section.visible {
-            display: block;
-        }
-
-        .results-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 16px rgba(30, 64, 175, 0.08);
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            border: 1px solid #e0f2fe;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .results-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
-        }
-
-        .results-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .info-box {
-            background: #f8fafc;
-            border: 1px solid #e0f2fe;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            line-height: 1.8;
-        }
-
-        .info-box strong {
-            color: #1e40af;
-        }
-
-        .summary-list {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 2rem;
-        }
-
-        .summary-list li {
-            padding: 0.75rem 0;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #e0f2fe;
-        }
-
-        .summary-list li:last-child {
-            border-bottom: none;
-        }
-
-        .price-highlight {
-            background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
-            border-left: 4px solid #3b82f6;
-            padding: 2rem;
-            border-radius: 8px;
-            text-align: center;
-            margin: 2rem 0;
-        }
-
-        .price-label {
-            font-size: 0.95rem;
-            color: #475569;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .price-value {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-
-        .price-subtitle {
-            font-size: 0.9rem;
-            color: #475569;
-        }
-
         .calculator-card {
             background: white;
             border-radius: 10px;
@@ -895,109 +798,25 @@
         </div>
     </section>
 
-    <!-- Results Section -->
-    <section class="results-section" style="display: none;">
-        <div class="container">
-            <div class="results-card">
-                <div class="results-header">
-                    <h1 style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.5px;">Il Tuo Preventivo Personalizzato</h1>
-                    <p style="color: #475569; font-size: 1.1rem;">Proteggi la tua Casa e la tua Famiglia</p>
-                </div>
-                
-                <h2>Riepilogo delle tue risposte</h2>
-                <ul class="summary-list" id="summaryListResults">
-                    <!-- Populated by JavaScript -->
-                </ul>
-
-                <div class="price-highlight">
-                    <div class="price-label">PREVENTIVO STIMATO</div>
-                    <div class="price-value" id="priceValueResults">€ 0</div>
-                    <div class="price-subtitle">Installazione chiavi in mano - IVA inclusa</div>
-                </div>
-
-                <div class="info-box">
-                    <strong>Il preventivo include:</strong><br>
-                    • Sistema d'allarme professionale completo<br>
-                    • Sensori di movimento e contatti magnetici<br>
-                    • Centrale di controllo con connettività GSM<br>
-                    • App mobile per controllo remoto<br>
-                    • Installazione e configurazione<br>
-                    • Assistenza tecnica 24/7<br>
-                    • Garanzia 2 anni su tutto il sistema<br>
-                    • Monitoraggio 24/7 disponibile come optional
-                </div>
-
-                <div class="actions">
-                    <button class="btn btn-primary" onclick="window.print()">Stampa Preventivo</button>
-                    <a href="./" class="btn btn-secondary">Nuovo Preventivo</a>
-                </div>
-            </div>
-
-            <div class="results-card">
-                <h2>Prossimi Passi</h2>
-                <div class="info-box">
-                    <p style="margin-bottom: 1rem;"><strong>Cosa succede ora?</strong></p>
-                    1. Un nostro tecnico ti contatterà entro 24 ore per confermare i dettagli<br>
-                    2. Fisseremo un appuntamento per un sopralluogo gratuito<br>
-                    3. Riceverai un preventivo definitivo personalizzato<br>
-                    4. Procederemo con l'installazione in base alle tue disponibilità
-                </div>
-                
-                <div class="info-box" style="background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%); border-left: 4px solid #3b82f6;">
-                    <strong style="color: #1e40af; font-size: 1.1rem;">Vuoi essere contattato?</strong><br>
-                    <p style="margin-top: 0.5rem; color: #475569;">
-                        Chiama il <strong style="color: #1e40af;">+39 XXX XXX XXXX</strong> o invia una email a <strong style="color: #1e40af;">info@secureline.it</strong>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
 
 
     <script>
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const mode = urlParams.get('mode');
-
-        // Manage page mode on load
-        window.addEventListener('DOMContentLoaded', function() {
-            if (mode === 'questionnaire') {
-                // Show questionnaire, hide hero and header
-                document.querySelector('.header').style.display = 'none';
-                document.querySelector('.hero').style.display = 'none';
-                document.querySelector('.calculator-section').style.display = 'block';
-                document.querySelector('.calculator-section').classList.add('visible');
-                document.querySelector('.results-section').style.display = 'none';
-            } else if (mode === 'results') {
-                // Show results, hide everything else
-                document.querySelector('.header').style.display = 'block';
-                document.querySelector('.hero').style.display = 'none';
-                document.querySelector('.calculator-section').style.display = 'none';
-                document.querySelector('.results-section').style.display = 'block';
-                document.querySelector('.results-section').classList.add('visible');
-                
-                // Load and display results
-                loadResults();
-            } else {
-                // Default: show hero
-                document.querySelector('.header').style.display = 'block';
-                document.querySelector('.hero').style.display = 'block';
-                document.querySelector('.calculator-section').style.display = 'none';
-                document.querySelector('.results-section').style.display = 'none';
-            }
-        });
-
         let currentQuestion = 1;
         let totalQuestions = 8; // Will be updated based on client type
         let answers = {};
 
-        // Handle start quote button - open in new tab with questionnaire mode
+        // Handle start quote button
         document.getElementById('startQuoteBtn').addEventListener('click', function() {
-            // Get current URL without parameters
-            const baseUrl = window.location.origin + window.location.pathname;
-            // Open same file in new tab but in questionnaire mode
-            window.open(baseUrl + '?mode=questionnaire', '_blank');
+            // Hide hero section
+            document.querySelector('.hero').classList.add('hidden');
+            
+            // Show calculator section
+            document.querySelector('.calculator-section').classList.add('visible');
+            
+            // Scroll to calculator
+            setTimeout(() => {
+                document.querySelector('.calculator-section').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         });
 
         // Update progress bar
@@ -1267,129 +1086,22 @@
             summaryDiv.innerHTML = summaryHTML;
         }
 
-        // Calculate button - redirect to results mode
+        // Calculate button (placeholder for now)
         document.addEventListener('DOMContentLoaded', function() {
             const calculateBtn = document.getElementById('calculateBtn');
             if (calculateBtn) {
                 calculateBtn.addEventListener('click', function() {
-                    // Save answers to localStorage
-                    localStorage.setItem('secureline_answers', JSON.stringify(answers));
-                    localStorage.setItem('secureline_type', 'casa');
-                    
-                    // Get current URL without parameters
-                    const baseUrl = window.location.origin + window.location.pathname;
-                    // Redirect to results mode
-                    window.location.href = baseUrl + '?mode=results';
+                    alert('Funzione di calcolo preventivo in arrivo!\n\nQuesto pulsante sarà attivato nella prossima fase.');
                 });
             }
             
             const calculateBtnBusiness = document.getElementById('calculateBtnBusiness');
             if (calculateBtnBusiness) {
                 calculateBtnBusiness.addEventListener('click', function() {
-                    // Save answers to localStorage
-                    localStorage.setItem('secureline_answers', JSON.stringify(answers));
-                    localStorage.setItem('secureline_type', 'business');
-                    
-                    // Get current URL without parameters
-                    const baseUrl = window.location.origin + window.location.pathname;
-                    // Redirect to results mode
-                    window.location.href = baseUrl + '?mode=results';
+                    alert('Funzione di calcolo preventivo in arrivo!\n\nQuesto pulsante sarà attivato nella prossima fase.');
                 });
             }
         });
-
-        // Function to load and display results
-        function loadResults() {
-            const answers = JSON.parse(localStorage.getItem('secureline_answers') || '{}');
-            const type = localStorage.getItem('secureline_type') || 'casa';
-
-            // Labels for display
-            const labels = {
-                clientType: 'Tipo di allarme',
-                houseType: 'Tipo di abitazione',
-                location: 'Posizione',
-                accessType: 'Tipo di accesso',
-                windowBars: 'Grate alle finestre',
-                zipCode: 'C.A.P.',
-                pastTheft: 'Furti precedenti',
-                businessType: 'Tipo di business',
-                businessLocation: 'Posizione business',
-                employees: 'Numero impiegati',
-                businessHours: 'Orari di attività',
-                productValue: 'Tipo di prodotto',
-                zipCodeBusiness: 'C.A.P.',
-                pastTheftBusiness: 'Furti precedenti'
-            };
-
-            const values = {
-                casa: 'Casa',
-                business: 'Business',
-                appartamento: 'Appartamento',
-                'casa-indipendente': 'Casa indipendente',
-                fuori: 'Fuori il nucleo urbano',
-                dentro: 'Nel nucleo urbano',
-                indipendente: 'Ingresso indipendente',
-                condiviso: 'Ingresso condiviso',
-                si: 'Sì',
-                no: 'No',
-                'negozio-strada': 'Negozio su strada',
-                'centro-commerciale': 'Locale in un centro commerciale',
-                'ufficio-studio': 'Ufficio o studio professionale',
-                'solo-io': 'Solo io',
-                '2-5': 'Da 2 a 5 impiegati',
-                'piu-5': 'Più di 5',
-                'mattina': 'Solo la mattina',
-                'sera': 'Solo la sera',
-                'mattina-sera': 'Mattina e sera',
-                'alto': 'Prodotto di alto valore',
-                'medio': 'Prodotto di medio valore',
-                'basso': 'Prodotto di basso valore'
-            };
-
-            // Display summary
-            const summaryList = document.getElementById('summaryListResults');
-            if (summaryList) {
-                for (const [key, answer] of Object.entries(answers)) {
-                    if (labels[key]) {
-                        const li = document.createElement('li');
-                        const displayValue = values[answer.value] || answer.value;
-                        li.innerHTML = `
-                            <span><strong>${labels[key]}:</strong></span>
-                            <span>${displayValue}</span>
-                        `;
-                        summaryList.appendChild(li);
-                    }
-                }
-            }
-
-            // Calculate price
-            let basePrice = 0;
-            if (type === 'casa') {
-                basePrice = 1200;
-                if (answers.houseType?.value === 'casa-indipendente') basePrice += 300;
-                if (answers.location?.value === 'fuori') basePrice += 150;
-                if (answers.accessType?.value === 'indipendente') basePrice += 100;
-                if (answers.windowBars?.value === 'no') basePrice += 200;
-                if (answers.pastTheft?.value === 'si') basePrice += 250;
-            } else {
-                basePrice = 1800;
-                if (answers.businessType?.value === 'negozio-strada') basePrice += 400;
-                else if (answers.businessType?.value === 'ufficio-studio') basePrice += 200;
-                if (answers.businessLocation?.value === 'fuori') basePrice += 150;
-                if (answers.employees?.value === '2-5') basePrice += 200;
-                else if (answers.employees?.value === 'piu-5') basePrice += 400;
-                if (answers.businessHours?.value === 'mattina-sera') basePrice += 300;
-                if (answers.productValue?.value === 'alto') basePrice += 500;
-                else if (answers.productValue?.value === 'medio') basePrice += 250;
-                if (answers.pastTheftBusiness?.value === 'si') basePrice += 300;
-            }
-
-            // Display price
-            const priceElement = document.getElementById('priceValueResults');
-            if (priceElement) {
-                priceElement.textContent = `€ ${basePrice.toLocaleString('it-IT')}`;
-            }
-        }
 
         // Initialize
         updateProgress();
